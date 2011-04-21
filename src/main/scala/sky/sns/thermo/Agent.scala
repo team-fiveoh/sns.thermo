@@ -12,7 +12,6 @@ class Agent(agentId: Int, temperatureData: File, server: String, port: Int) {
   val pollingInterval = 1
 
   def start {
-
     scheduler.scheduleAtFixedRate(new Runnable {
       def run() {
         val lastLineOfFile = Source.fromFile(temperatureData).getLines.toList.last

@@ -1,6 +1,7 @@
 package sky.sns.thermo
 
 import collection.mutable.HashMap
+
 class TemperatureState {
   val agentToTemperatureMapping = new HashMap[Int, BigDecimal]
 
@@ -14,6 +15,3 @@ class TemperatureState {
       .mkString("", "\n", "\n")
   }
 }
-
-
-

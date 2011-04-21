@@ -1,1 +1,1 @@
-java -jar sns-thermo.jar
+java -jar sns-thermo.jar $@

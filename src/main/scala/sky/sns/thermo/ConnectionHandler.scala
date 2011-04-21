@@ -19,7 +19,7 @@ class ConnectionHandler(messageFromClient: String, temperatureState: Temperature
   }
 
   private def writeTemperatureFile(temperatureState: TemperatureState) {
-    IOUtils.write(temperatureState.print, new FileOutputStream(reportFile))
+    IOUtils.write(temperatureState.asString, new FileOutputStream(reportFile))
   }
 }
 

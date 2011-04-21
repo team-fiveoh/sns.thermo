@@ -8,7 +8,7 @@ class TemperatureState {
     agentToTemperatureMapping.put(agentId, temperature)
   }
 
-  def print: String = {
+  def asString = {
     agentToTemperatureMapping
       .map(element => element._1 + "," + element._2)
       .mkString("", "\n", "\n")

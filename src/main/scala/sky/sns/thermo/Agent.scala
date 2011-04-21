@@ -3,37 +3,38 @@ package sky.sns.thermo
 import java.util.concurrent.{TimeUnit, Executors}
 import io.Source
 import java.io.File
-import java.net.{DatagramPacket, InetSocketAddress, DatagramSocket}
+import grizzled.net._
+
 
 class Agent(agentId: Int, temperatureData: File, server: String, port: Int) {
   val scheduler = Executors.newSingleThreadScheduledExecutor()
   val temperatureFilePattern = """\d+\s+,\s+\d+/\d+/\d+ \d+:\d+:\d+\s+,\s+(\d+\.\d+) C""".r
-  val pollingInterval = 5
+  val pollingInterval = 1
 
   def start {
+
     scheduler.scheduleAtFixedRate(new Runnable {
-      def run {
+      def run() {
         val lastLineOfFile = Source.fromFile(temperatureData).getLines.toList.last
 
         lastLineOfFile match {
 
           case temperatureFilePattern(degrees) =>
-            send(agentId, degrees.toFloat)
+            send(agentId, degrees)
 
           case _ =>
-            println(" read some funny input: " + lastLineOfFile)
+            Console.println(" read some funny input: " + lastLineOfFile)
         }
 
       }
     }, pollingInterval, pollingInterval, TimeUnit.SECONDS)
   }
 
-  private def send(agentId: Int, degrees: Float) {
+  private def send(agentId: Int, degrees: String) {
     val message = agentId + " " + degrees
-    val messageBytes = message.getBytes
+    UDPDatagramSocket.sendString(message, IPAddress(server), port)
 
-    val socket = new DatagramSocket(new InetSocketAddress(server, port))
-    socket.send(new DatagramPacket(messageBytes, messageBytes.length))
+    println(" - sent " + message + " to " + server + ":" + port)
   }
 }
 
@@ -52,11 +53,12 @@ object Agent {
       exitWithMessage("File does not exist")
     }
 
+    println("starting agent")
     new Agent(agentId, file, server, port).start
   }
 
   def exitWithMessage(message: String) = {
-    Console.println(message)
+    println(message)
     System.exit(1)
   }
 }

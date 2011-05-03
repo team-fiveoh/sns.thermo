@@ -1,30 +1,31 @@
 ArrayList agents = new ArrayList();
-/* @pjs preload="http://horse.local/hackimages/choppedfloorplan.png"; */
+/* @pjs preload="./data/choppedfloorplan.jpg"; */
 PImage backgroundImg; 
 
 void setup() {
   size(545, 700);
   frameRate(36);
-  backgroundImg=loadImage("http://horse.local/hackimages/choppedfloorplan.png");
+  backgroundImg=loadImage("./data/choppedfloorplan.jpg");
   intialiseAgents();
   smooth();
 }
 
 void draw() {
+    setTemps(); 
   background(255);    // Setting the background to white
-
+text("Polar Bear Habitat Suitability Monitoring Application", 0, 10);
   image(backgroundImg, 0, 50);     
 
   fill(0); 
 
-  setTemps();  
+ 
   displayAgents();
 
-  text("Polar Bear Habitat Suitability Monitoring Application", 0, 10);
+  
 }
 
 void intialiseAgents() {
-  String[] readings = loadStrings("http://horse.local/hackdata/readings.txt");
+  String[] readings = loadStrings("./data/readings.txt");
   //  println(readings);
   for (int i=0; i < readings.length; i++) {
 
@@ -108,7 +109,7 @@ int workOutYCoord(int id) {
 
 
 void setTemps() {
-  String[] readings = loadStrings("http://horse.local/hackdata/readings.txt");
+  String[] readings = loadStrings("./data/readings.txt");
   checkAgentAdditions(readings);
   for (int i=0; i < readings.length; i++) {
 

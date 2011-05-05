@@ -1,4 +1,4 @@
-ArrayList agents = new ArrayList();
+HashMap agents = new HashMap();
 /* @pjs preload="./data/choppedfloorplan.jpg"; */
 PImage backgroundImg; 
 
@@ -6,48 +6,27 @@ void setup() {
   size(545, 700);
   frameRate(36);
   backgroundImg=loadImage("./data/choppedfloorplan.jpg");
-  intialiseAgents();
+  //  intialiseAgents();
   smooth();
 }
 
 void draw() {
-    setTemps(); 
+  setTemps(); 
   background(255);    // Setting the background to white
-text("Polar Bear Habitat Suitability Monitoring Application", 0, 10);
+  text("Polar Bear Habitat Suitability Monitoring Application", 0, 10);
   image(backgroundImg, 0, 50);     
 
   fill(0); 
 
- 
+
   displayAgents();
-
-  
-}
-
-void intialiseAgents() {
-  String[] readings = loadStrings("./data/readings.txt");
-  //  println(readings);
-  for (int i=0; i < readings.length; i++) {
-
-    String[] pieces = split(readings[i], ',');  
- 
-    int id = int(pieces[0]);
-    int xCoord;
-    int yCoord;
-
-    xCoord = workOutXCoord(id);
-    yCoord= workOutYCoord(id);
-
-    agents.add( new Agent(xCoord, yCoord));
-  }
 }
 
 void checkAgentAdditions(String[] pAgents) {
   //  println("pAgents.length:" + pAgents.length);
   //  println("agents.length:" + agents.size());
   if (pAgents.length > agents.size()) {
-    println("Adding agent");
-    addAgent(pAgents);
+    addAgents(pAgents);
   }
   else if (pAgents.length < agents.size()) {
     // remove agent
@@ -55,14 +34,21 @@ void checkAgentAdditions(String[] pAgents) {
 }
 
 
-void addAgent(String[] pAgents) {
-  String[] pieces = split(pAgents[pAgents.length-1], ',');  
-  int id = int(pieces[0]);
+void addAgents(String[] pAgents) {
+  for (int i=0; i < pAgents.length; i++) {
+    String[] pieces = split(pAgents[i], ',');  
 
-  int xCoord = workOutXCoord(id);
-  int yCoord =workOutYCoord(id);
+    int id = int(pieces[0]);
+    if (agents.get(id) == null) {
 
-  agents.add( new Agent(xCoord, yCoord));
+      int xCoord;
+      int yCoord;
+      xCoord = workOutXCoord(id);
+      yCoord= workOutYCoord(id);
+      println("Adding agent id "+ id);
+      agents.put(id, new Agent(xCoord, yCoord));
+    }
+  }
 }
 
 int workOutXCoord(int id) {
@@ -78,12 +64,11 @@ int workOutXCoord(int id) {
   else if (id == 3) {
     return 400;
   }
-    else if (id == 4) {
+  else if (id == 4) {
     return 270;
   }
-  
-    return 500;
- 
+
+  return 500;
 }
 
 int workOutYCoord(int id) {
@@ -99,12 +84,11 @@ int workOutYCoord(int id) {
   else if (id == 3) {
     return 300;
   }
-    else if (id == 4) {
+  else if (id == 4) {
     return 480;
   }
- 
-    return 500;
- 
+
+  return 500;
 }
 
 
@@ -116,7 +100,7 @@ void setTemps() {
     String[] pieces = split(readings[i], ',');  
 
     int id = int(pieces[0]);
-
+    println("id" + id);
     float temp = float(pieces[1]);
 
     ( (Agent)agents.get(id)).setTemp(temp);
@@ -124,8 +108,10 @@ void setTemps() {
 }
 
 void displayAgents() {
-  for (int i=0; i < agents.size(); i++) {
-    ((Agent)agents.get(i)).display();
+  Iterator i = agents.values().iterator();
+
+  while (i.hasNext ()) {
+    ((Agent)i.next()).display();
   }
 }
 

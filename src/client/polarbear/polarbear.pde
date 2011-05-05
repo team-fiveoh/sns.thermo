@@ -23,16 +23,26 @@ void draw() {
 }
 
 void checkAgentAdditions(String[] pAgents) {
-  //  println("pAgents.length:" + pAgents.length);
-  //  println("agents.length:" + agents.size());
-  if (pAgents.length > agents.size()) {
     addAgents(pAgents);
-  }
-  else if (pAgents.length < agents.size()) {
-    // remove agent
-  }
+    removeAgents(pAgents);
 }
 
+void removeAgents(String[] pAgents) {
+  ArrayList presentIds = new ArrayList();
+  for (int i=0; i < pAgents.length; i++) {
+    String[] pieces = split(pAgents[i], ',');  
+    presentIds.add(int(pieces[0]));
+  }
+
+
+  Iterator i = agents.keySet().iterator();
+
+  while (i.hasNext ()) {
+    if (!presentIds.contains(i.next())) {
+      i.remove();
+    }
+  }
+}
 
 void addAgents(String[] pAgents) {
   for (int i=0; i < pAgents.length; i++) {

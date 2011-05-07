@@ -1,3 +1,5 @@
+import processing.opengl.*;
+
 HashMap agents = new HashMap();
 /* @pjs preload="./data/choppedfloorplan.jpg"; */
 PImage backgroundImg; 
@@ -6,30 +8,22 @@ void setup() {
   size(545, 700);
   frameRate(36);
   backgroundImg=loadImage("./data/choppedfloorplan.jpg");
-  //  intialiseAgents();
   smooth();
 }
 
 void draw() {
-//  println("draw() 1");
   setTemps(); 
-//  println("draw() 2");
-  background(255);    // Setting the background to white
-//  println("draw() 3");
+  background(255); 
   text("Polar Bear Habitat Suitability Monitoring Application", 0, 10);
-//  println("draw() 4");
-  image(backgroundImg, 0, 50);     
-//println("draw() 5");
+  image(backgroundImg, 0, 50); 
   fill(0); 
-//println("draw() 6");
 
   displayAgents();
-//  println("draw() finish");
 }
 
 void checkAgentAdditions(String[] pAgents) {
-    addAgents(pAgents);
-    removeAgents(pAgents);
+  addAgents(pAgents);
+  removeAgents(pAgents);
 }
 
 void removeAgents(String[] pAgents) {
@@ -39,15 +33,20 @@ void removeAgents(String[] pAgents) {
     presentIds.add(int(pieces[0]));
   }
 
-
-  Iterator i = agents.keySet().iterator();
-
-  while (i.hasNext ()) {
-    if (!presentIds.contains(i.next())) {
-      println("Removing agent id "+ i);
-      i.remove();
+  Iterator itr = agents.keySet().iterator();
+  ArrayList toRemove = new ArrayList();
+  while (itr.hasNext ()) {
+    Object key = itr.next();
+    if (!presentIds.contains(key)) {
+      toRemove.add(key);
     }
   }
+
+    itr = toRemove.iterator();
+    while(itr.hasNext()){
+      
+      agents.remove(itr.next());
+    }
 }
 
 void addAgents(String[] pAgents) {
@@ -111,29 +110,19 @@ int workOutYCoord(int id) {
 void setTemps() {
   String[] readings = loadStrings("./data/readings.txt");
   checkAgentAdditions(readings);
-  println("readings.length "+ readings.length);
   for (int i=0; i < readings.length; i++) {
-        println("id" + i);
-//println("1");
     String[] pieces = split(readings[i], ',');  
-//println("2");
-    int id = int(pieces[0]);
-//    println("3");
 
-//    println("4");
+    int id = int(pieces[0]);
+
     float temp = float(pieces[1]);
-//println("5");
     ( (Agent)agents.get(id)).setTemp(temp);
-//    println("6");
   }
 }
 
 void displayAgents() {
-//  println("displayAgents");
   Iterator i = agents.entrySet().iterator();
-println("i.hasNext () " + i.hasNext());
   while (i.hasNext ()) {
-//    println("displayAgents()");
     Map.Entry me = (Map.Entry)i.next();
     ((Agent)me.getValue()).display();
   }
@@ -192,9 +181,6 @@ class Agent {
     else if (red > 255) {
       red = 255;
     }
-
-
-    //    println(red +":"+"0:"+blue);
     c = color(red, 0, blue);
   }
 }

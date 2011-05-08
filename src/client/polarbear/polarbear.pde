@@ -16,37 +16,39 @@ void draw() {
   background(255); 
   text("Polar Bear Habitat Suitability Monitoring Application", 0, 10);
   image(backgroundImg, 0, 50); 
+  
   fill(0); 
 
   displayAgents();
+  
 }
 
 void checkAgentAdditions(String[] pAgents) {
-  addAgents(pAgents);
-  removeAgents(pAgents);
+
+  addAgents(pAgents); 
+  removeAgents(pAgents); 
 }
-
 void removeAgents(String[] pAgents) {
-  ArrayList presentIds = new ArrayList();
+  ArrayList presentIds = new ArrayList();println("removeAgents1");
   for (int i=0; i < pAgents.length; i++) {
-    String[] pieces = split(pAgents[i], ',');  
-    presentIds.add(int(pieces[0]));
+    String[] pieces = split(pAgents[i], ',');  println("removeAgents2");
+    presentIds.add(int(pieces[0]));println("removeAgents3");
   }
 
-  Iterator itr = agents.keySet().iterator();
-  ArrayList toRemove = new ArrayList();
-  while (itr.hasNext ()) {
-    Object key = itr.next();
+  Iterator itr1 = agents.keySet().iterator();println("removeAgents4");
+  ArrayList toRemove = new ArrayList();println("removeAgents5");
+  while (itr1.hasNext ()) {println("removeAgents6.1");
+
+    Integer key = (Integer)itr1.next();println("removeAgents6");
     if (!presentIds.contains(key)) {
-      toRemove.add(key);
+      toRemove.add(key);println("removeAgents7");
     }
   }
 
-    itr = toRemove.iterator();
-    while(itr.hasNext()){
-      
-      agents.remove(itr.next());
-    }
+  Iterator itr2 = toRemove.iterator();println("removeAgents8");
+  while (itr2.hasNext ()) {
+    agents.remove(itr2.next());println("removeAgents9");
+  }
 }
 
 void addAgents(String[] pAgents) {
@@ -60,7 +62,6 @@ void addAgents(String[] pAgents) {
       int yCoord;
       xCoord = workOutXCoord(id);
       yCoord= workOutYCoord(id);
-      println("Adding agent id "+ id);
       agents.put(id, new Agent(xCoord, yCoord));
     }
   }
@@ -111,8 +112,7 @@ void setTemps() {
   String[] readings = loadStrings("./data/readings.txt");
   checkAgentAdditions(readings);
   for (int i=0; i < readings.length; i++) {
-    String[] pieces = split(readings[i], ',');  
-
+    String[] pieces = split(readings[i], ',');
     int id = int(pieces[0]);
 
     float temp = float(pieces[1]);
@@ -157,8 +157,6 @@ class Agent {
     rect(xpos+42, ypos-27, 56, 34);
     fill(255, 255, 255);
     rect(xpos+45, ypos-25, 50, 30);
-    //    ellipseMode(CENTER);
-    //    ellipse(xpos, ypos, 20, 20);
     fill(c);
 
     text(temp + "°C", xpos+50, ypos);

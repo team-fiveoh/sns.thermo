@@ -15,6 +15,7 @@ void setup() {
 void draw() {
   setTemps(); 
   background(255); 
+  fill(0, 0, 0);
   text("Polar Bear Habitat Suitability Monitoring Application", 0, 10);
   image(backgroundImg, 0, 50); 
 
@@ -46,58 +47,20 @@ void removeAgents(String[] agentReadings) {
   }
 }
 
-void addAgent(String[] pieces)  {
-  int id = int(pieces[0]);
-  if (agents.get(id) == null) {
+void addAgent(String[] agentReadings) {
+  String[] agentDetails = loadStrings("./data/agentdetails.txt");
 
-    int xCoord;
-    int yCoord;
-    xCoord = workOutXCoord(id);
-    yCoord= workOutYCoord(id);
-    agents.put(id, new Agent(xCoord, yCoord));
+  String agentId = agentReadings[0];
+
+  for (int i= 0; i < agentDetails.length; i++) {
+    String[] agentDetail = agentDetails[i].split(",");
+    if (agentDetail[0].equals(agentId)) {
+      int xCoord = int(agentDetail[1]);
+      int yCoord = int(agentDetail[2]);
+      agents.put(int(agentId), new Agent(xCoord, yCoord));
+    }
   }
 }
-
-int workOutXCoord(int id) {
-  if (id == 0) {
-    return 175;
-  }
-  else if (id == 1) {
-    return 175;
-  }
-  else if (id == 2) {
-    return 175;
-  }
-  else if (id == 3) {
-    return 400;
-  }
-  else if (id == 4) {
-    return 270;
-  }
-
-  return 500;
-}
-
-int workOutYCoord(int id) {
-  if (id == 0) {
-    return 100;
-  }
-  else if (id == 1) {
-    return 300;
-  }
-  else if (id == 2) {
-    return 600;
-  }
-  else if (id == 3) {
-    return 300;
-  }
-  else if (id == 4) {
-    return 480;
-  }
-
-  return 500;
-}
-
 
 void setTemps() {
   String[] readings = loadStrings("./data/readings.txt");
@@ -154,32 +117,34 @@ class Agent {
     drawTempBox();
   }
 
-  void drawTempBox(){
-  fill(0, 0, 0);
-  rect(xpos+42, ypos-27, 56, 34);
-  fill(255, 255, 255);
-  rect(xpos+45, ypos-25, 50, 30);
-  fill(c);
+  void drawTempBox() {
+    fill(0, 0, 0);
+    rect(xpos+42, ypos-27, 56, 34);
+    fill(255, 255, 255);
+    rect(xpos+45, ypos-25, 50, 30);
+    fill(c);
 
-  text(temp + "°C", xpos+50, ypos);
-}
-void workOutColor() {
-  float factor = temp - 18.0;
-  factor = factor * 45.0;
-  int blue = int(255.0-factor);
-  int red = int(factor);
-  if (blue < 0) {
-    blue = 0;
-  }    
-  else if (blue > 255) {
-    blue = 255;
+    text(temp + "°C", xpos+50, ypos);
   }
-  if (red < 0) {
-    red = 0;
-  }    
-  else if (red > 255) {
-    red = 255;
+  
+  void workOutColor() {
+    float factor = temp - 18.0;
+    factor = factor * 45.0;
+    int blue = int(255.0-factor);
+    int red = int(factor);
+    if (blue < 0) {
+      blue = 0;
+    }    
+    else if (blue > 255) {
+      blue = 255;
+    }
+    if (red < 0) {
+      red = 0;
+    }    
+    else if (red > 255) {
+      red = 255;
+    }
+    c = color(red, 0, blue);
   }
-  c = color(red, 0, blue);
 }
-}
+

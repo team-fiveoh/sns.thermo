@@ -7,7 +7,7 @@ PImage backgroundImg;
 void setup() {
   size(545, 700);
   frameRate(36);
-  backgroundImg=loadImage("./data/choppedfloorplan.jpg");
+  backgroundImg = loadImage("./data/choppedfloorplan.jpg");
   smooth();
   String[] readings = loadStrings("./data/readings.txt");
 }
@@ -52,7 +52,7 @@ void addAgent(String[] agentReadings) {
 
   String agentId = agentReadings[0];
 
-  for (int i= 0; i < agentDetails.length; i++) {
+  for (int i = 0; i < agentDetails.length; i++) {
     String[] agentDetail = agentDetails[i].split(",");
     if (agentDetail[0].equals(agentId)) {
       int xCoord = int(agentDetail[1]);
@@ -82,69 +82,14 @@ void setTemps() {
 }
 
 void displayAgents() {
-  Iterator i = agents.entrySet().iterator();
-  while (i.hasNext ()) {
-    Map.Entry me = (Map.Entry)i.next();
-    ((Agent)me.getValue()).display();
+  Iterator itr3 = agents.entrySet().iterator();
+  while (itr3.hasNext ()) {
+    Map.Entry me = (Map.Entry)itr3.next();
+    Agent agent = (Agent)me.getValue();
+    agent.display();
   }
 }
 
 
-class Agent {
-  ParticleSystem ps;
-  float temp;
-  color c;
-  float xpos;
-  float ypos;
 
-  Agent(float pxpos, float pypos) {
-    c = color(31, 8, 255);
-    xpos=pxpos;
-    ypos=pypos;
-    ps = new ParticleSystem(1, new PVector(width/2, height/2, 0));
-  }
-
-  void setTemp(float pTemp) {
-    temp = pTemp;
-  }
-
-  void display() {
-    stroke(0);
-    ps.run();
-    workOutColor();
-    ps.addParticle(xpos, ypos, c);
-
-    drawTempBox();
-  }
-
-  void drawTempBox() {
-    fill(0, 0, 0);
-    rect(xpos+42, ypos-27, 56, 34);
-    fill(255, 255, 255);
-    rect(xpos+45, ypos-25, 50, 30);
-    fill(c);
-
-    text(temp + "°C", xpos+50, ypos);
-  }
-  
-  void workOutColor() {
-    float factor = temp - 18.0;
-    factor = factor * 45.0;
-    int blue = int(255.0-factor);
-    int red = int(factor);
-    if (blue < 0) {
-      blue = 0;
-    }    
-    else if (blue > 255) {
-      blue = 255;
-    }
-    if (red < 0) {
-      red = 0;
-    }    
-    else if (red > 255) {
-      red = 255;
-    }
-    c = color(red, 0, blue);
-  }
-}
 

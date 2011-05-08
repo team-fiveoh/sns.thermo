@@ -9,12 +9,12 @@ class Particle {
   color c;
 
   // Another constructor (the one we are using here)
-  Particle(PVector l) {
+ Particle(PVector l) {
     acc = new PVector(0, 0.05, 0);
     vel = new PVector(random(-1, 1), random(-2, 0), 0);
     loc = l.get();
     r = 10.0;
-//    timer = 100.0;
+// timer = 100.0;
   }
 
   Particle(PVector l, color pColor) {
@@ -22,7 +22,7 @@ class Particle {
     vel = new PVector(random(-1, 1), random(-2, 0), 0);
     loc = l.get();
     r = 10.0;
-//    timer = 100.0;
+// timer = 100.0;
     c = pColor;
   }
 

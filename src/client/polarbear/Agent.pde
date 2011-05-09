@@ -1,5 +1,5 @@
 class Agent {
-  ParticleSystem ps;
+  VentSystem ps;
   float temp;
   color c;
   float xpos;
@@ -9,7 +9,7 @@ class Agent {
     c = color(225, 225, 255);
     xpos=pxpos;
     ypos=pypos;
-    ps = new ParticleSystem(1, new PVector(width/2, height/2, 0));
+    ps = new VentSystem();
   }
 
   void setTemp(float pTemp) {
@@ -20,7 +20,7 @@ class Agent {
     stroke(0);
     ps.run();
     workOutColor();
-    ps.addParticle(xpos, ypos, c);
+    ps.addVent(xpos, ypos, c);
 
     drawTempBox();
   }

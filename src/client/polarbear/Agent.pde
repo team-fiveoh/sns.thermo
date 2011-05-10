@@ -31,10 +31,17 @@ class Agent {
     fill(255, 255, 255);
     rect(xpos+45, ypos-25, 50, 30);
     fill(c);
+    String tTemp;
+    if (temp > 9.99) {
+      tTemp = nf(temp, 2, 1);
+    }
+    else {
+      tTemp = nf(temp, 1, 1);
+    }
 
-    text(temp + "°C", xpos+50, ypos);
+    text(tTemp + "°C", xpos+50, ypos);
   }
-  
+
   void workOutColor() {
     float factor = temp - 18.0;
     factor = factor * 45.0;
@@ -55,3 +62,4 @@ class Agent {
     c = color(red, 0, blue);
   }
 }
+

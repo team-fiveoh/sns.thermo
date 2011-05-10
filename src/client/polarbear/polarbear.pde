@@ -5,7 +5,7 @@ HashMap agents = new HashMap();
 PImage backgroundImg; 
 
 void setup() {
-  size(545, 700);
+  size(545, 655);
   frameRate(36);
   backgroundImg = loadImage("./data/choppedfloorplan.jpg");
   smooth();
@@ -16,8 +16,7 @@ void draw() {
   setTemps(); 
   background(255); 
   fill(0, 0, 0);
-  text("Polar Bear Habitat Suitability Monitoring Application", 0, 10);
-  image(backgroundImg, 0, 50); 
+  image(backgroundImg, 0, 0); 
 
   fill(0); 
 
